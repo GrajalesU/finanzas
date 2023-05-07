@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
-import GoogleButton from '../components/GoogleButton'
+import GoogleButton from '@/components/GoogleButton'
 
 export default async function Login() {
   const session = await getServerSession()
