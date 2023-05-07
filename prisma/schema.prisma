@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ingreso {
+  id_ingreso                 Int          @id @default(autoincrement())
+  descripcion                String
+  fecha                      DateTime
+  monto                      Float
+  tipo_ingreso               TipoIngreso  @relation(fields: [tipoIngresoId_tipo_ingreso], references: [id_tipo_ingreso])
+  tipoIngresoId_tipo_ingreso Int
+  Presupuesto                Presupuesto? @relation(fields: [presupuestoId_presupuesto], references: [id_presupuesto])
+  presupuestoId_presupuesto  Int?
+  ValorReal                  ValorReal?   @relation(fields: [valorRealId_valor_real], references: [id_valor_real])
+  valorRealId_valor_real     Int?
+}
+
+model Gasto {
+  id_gasto                  Int          @id @default(autoincrement())
+  descripcion               String
+  fecha                     DateTime
+  monto                     Float
+  tipo_gasto                TipoGasto    @relation(fields: [tipoGastoId_tipo_gasto], references: [id_tipo_gasto])
+  tipoGastoId_tipo_gasto    Int
+  Presupuesto               Presupuesto? @relation(fields: [presupuestoId_presupuesto], references: [id_presupuesto])
+  presupuestoId_presupuesto Int?
+  ValorReal                 ValorReal?   @relation(fields: [valorRealId_valor_real], references: [id_valor_real])
+  valorRealId_valor_real    Int?
+}
+
+model Presupuesto {
+  id_presupuesto Int       @id @default(autoincrement())
+  gastos         Gasto[]
+  ingresos       Ingreso[]
+
+  Periodo Periodo[]
+}
+
+model TipoIngreso {
+  id_tipo_ingreso Int       @id @default(autoincrement())
+  nombre          String
+  Ingreso         Ingreso[]
+}
+
+model TipoGasto {
+  id_tipo_gasto Int     @id @default(autoincrement())
+  nombre        String
+  Gasto         Gasto[]
+}
+
+model ValorReal {
+  id_valor_real                      Int             @id @default(autoincrement())
+  fecha_inicio                       DateTime
+  fecha_fin                          DateTime
+  ingresos                           Ingreso[]
+  gastos                             Gasto[]
+  metodo_obtencion                   MetodoObtencion @relation(fields: [metodoObtencionId_metodo_obtencion], references: [id_metodo_obtencion])
+  metodoObtencionId_metodo_obtencion Int
+  Periodo                            Periodo[]
+}
+
+model MetodoObtencion {
+  id_metodo_obtencion Int         @id @default(autoincrement())
+  nombre              String
+  ValorReal           ValorReal[]
+}
+
+model Periodo {
+  id_periodo                Int         @id @default(autoincrement())
+  fecha_inicio              DateTime
+  fecha_fin                 DateTime
+  valoreReal                ValorReal   @relation(fields: [valorRealId_valor_real], references: [id_valor_real])
+  presupuesto               Presupuesto @relation(fields: [presupuestoId_presupuesto], references: [id_presupuesto])
+  valorRealId_valor_real    Int
+  presupuestoId_presupuesto Int
+}
