@@ -8,6 +8,10 @@
   ],
   "rules": {
     "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-explicit-any": "error"
+    "@typescript-eslint/no-explicit-any": "error",
+    "no-unused-vars": [
+      2,
+      { "args": "after-used", "argsIgnorePattern": "^(parent|args|context)" }
+    ]
   }
 }
