@@ -1,6 +1,6 @@
 {
   "dotenv.enableAutocloaking": false,
-  "cSpell.words": ["esnext", "singin"],
+  "cSpell.words": ["descripcion", "esnext", "singin"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
